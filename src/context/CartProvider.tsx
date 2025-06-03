@@ -2,20 +2,8 @@
 
 import { useReducer, type ReactNode } from "react";
 import { CartContext } from "./CartContext";
-import { Product } from "../types/product";
-import { CartItem } from "../types/cart";
-
-interface CartState {
-  items: CartItem[];
-  totalAmount: number;
-}
-
-type CartAction =
-  | { type: "ADD_ITEM"; item: CartItem }
-  | { type: "INCREMENT_ITEM"; product: Product }
-  | { type: "DECREMENT_ITEM"; productId: string | number }
-  | { type: "REMOVE_ITEM"; productId: string | number }
-  | { type: "CLEAR_CART" };
+import type { Product } from "../types/product";
+import type { CartItem, CartState, CartAction } from "../types/cart";
 
 const initialState: CartState = {
   items: [],
@@ -25,10 +13,10 @@ const initialState: CartState = {
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
     case "ADD_ITEM": {
-      const existing = state.items.find(i => i.productId === action.item.productId);
+      const existing = state.items.find(i => i.id === action.item.id);
       const updatedItems = existing
         ? state.items.map(i =>
-            i.productId === action.item.productId
+            i.id === action.item.id
               ? { ...i, quantity: i.quantity + action.item.quantity }
               : i
           )
@@ -44,7 +32,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
     case "INCREMENT_ITEM": {
       const updatedItems = state.items.map(i =>
-        i.productId === action.product.id
+        i.id === action.product.id
           ? { ...i, quantity: i.quantity + 1 }
           : i
       );
@@ -60,7 +48,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     case "DECREMENT_ITEM": {
       const updatedItems = state.items
         .map(i =>
-          i.productId === action.productId
+          i.id === action.productId
             ? { ...i, quantity: i.quantity - 1 }
             : i
         )
@@ -75,7 +63,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     }
 
     case "REMOVE_ITEM": {
-      const updatedItems = state.items.filter(i => i.productId !== action.productId);
+      const updatedItems = state.items.filter(i => i.id !== action.productId);
       const totalAmount = updatedItems.reduce(
         (acc, i) => acc + i.price * i.quantity,
         0
@@ -98,25 +86,11 @@ type CartProviderProps = {
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  const addToCart = (item: CartItem) => {
-    dispatch({ type: "ADD_ITEM", item });
-  };
-
-  const incrementFromCart = (product: Product) => {
-    dispatch({ type: "INCREMENT_ITEM", product });
-  };
-
-  const decrementFromCart = (productId: string | number) => {
-    dispatch({ type: "DECREMENT_ITEM", productId });
-  };
-
-  const removeFromCart = (productId: string | number) => {
-    dispatch({ type: "REMOVE_ITEM", productId });
-  };
-
-  const clearCart = () => {
-    dispatch({ type: "CLEAR_CART" });
-  };
+  const addToCart = (item: CartItem) => dispatch({ type: "ADD_ITEM", item });
+  const incrementFromCart = (product: Product) => dispatch({ type: "INCREMENT_ITEM", product });
+  const decrementFromCart = (productId: string | number) => dispatch({ type: "DECREMENT_ITEM", productId });
+  const removeFromCart = (productId: string | number) => dispatch({ type: "REMOVE_ITEM", productId });
+  const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
   const cartTotal = state.totalAmount;
 

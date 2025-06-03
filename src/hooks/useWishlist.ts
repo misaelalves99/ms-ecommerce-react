@@ -1,7 +1,8 @@
 // src/hooks/useWishlist.ts
 
 import { useContext } from "react";
-import { WishlistContext, type WishlistContextType } from "../context/WishlistContext";
+import { WishlistContext } from "../context/WishlistContext";
+import type { WishlistContextType } from "../types/product";
 
 export const useWishlist = (): WishlistContextType => {
   const context = useContext(WishlistContext);

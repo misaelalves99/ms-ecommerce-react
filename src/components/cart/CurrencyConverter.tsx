@@ -1,3 +1,5 @@
+// src/components/cart/CurrencyConverter.tsx
+
 import React, { useState } from 'react';
 import styles from './CurrencyConverter.module.css';
 

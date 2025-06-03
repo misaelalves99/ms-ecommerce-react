@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom"; // React Router
+import { Link, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import CartButton from "../cart/CartButton";
 import FavoriteButton from "../favorites/FavoriteButton";

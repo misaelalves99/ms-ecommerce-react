@@ -1,4 +1,4 @@
-// app/components/CategoryList.tsx
+// src/components/category/CategoryList.tsx
 
 import React from 'react';
 import styles from './CategoryList.module.css';

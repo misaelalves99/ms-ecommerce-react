@@ -7,16 +7,7 @@ import ProductDetails from "../../components/product-list/ProductDetails";
 import styles from "./ProductPage.module.css";
 import { Product } from "../../types/product";
 import { getProducts } from "../../lib/api/products";
-
-interface CartItem {
-  id: string;
-  productId: number | string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  quantity: number;
-  product: Product;
-}
+import { CartItem } from "../../types/cartItem";
 
 const ProductPage: React.FC = () => {
   const params = useParams<{ id?: string }>();

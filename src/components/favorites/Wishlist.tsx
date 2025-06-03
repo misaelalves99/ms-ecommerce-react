@@ -3,14 +3,7 @@
 import React from "react";
 import { useWishlist } from '../../hooks/useWishlist';
 import styles from "./Wishlist.module.css";
-
-interface Product {
-  id: number | string;
-  name: string;
-  description?: string;
-  price: number;
-  imageUrl?: string;
-}
+import type { WishlistProduct } from "../../types/wishlist";
 
 const Wishlist: React.FC = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -23,7 +16,7 @@ const Wishlist: React.FC = () => {
         <p className={styles.emptyMessage}>Sua lista de desejos está vazia.</p>
       ) : (
         <div className={styles.grid}>
-          {wishlist.map((product: Product) => (
+          {wishlist.map((product: WishlistProduct) => (
             <div key={product.id} className={styles.cardHorizontal}>
               <div className={styles.imageSection}>
                 <img

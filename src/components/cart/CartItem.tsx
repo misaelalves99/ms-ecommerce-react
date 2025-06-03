@@ -1,16 +1,8 @@
-// app/components/CartItem.tsx
+// src/components/cart/CartItem.tsx
 
 import React from 'react';
 import styles from './CartItem.module.css';
-
-type CartItemType = {
-  id: string | number;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl?: string;
-  category?: string;
-};
+import type { CartItemType } from '../../types/cart';
 
 interface CartItemProps {
   item: CartItemType;

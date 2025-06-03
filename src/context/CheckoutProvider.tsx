@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { CheckoutContext } from "../context/CheckoutContext";
-import { CheckoutForm } from "../types/checkout";
+import type { CheckoutForm } from "../types/checkout";
 
 type CheckoutProviderProps = {
   children: ReactNode;
@@ -11,7 +11,11 @@ type CheckoutProviderProps = {
 export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const [form, setForm] = useState<CheckoutForm>({
     name: "",
+    email: "",
+    phone: "",
     address: "",
+    city: "",
+    zipCode: "",
     paymentMethod: "credit_card",
   });
 

@@ -1,3 +1,5 @@
+// src/components/corousel/Carousel.tsx
+
 import React, { useEffect, useState } from 'react';
 import styles from './Carousel.module.css';
 import type { Product } from '../../types/product';
@@ -78,4 +80,3 @@ const Carousel: React.FC = () => {
 };
 
 export default Carousel;
-

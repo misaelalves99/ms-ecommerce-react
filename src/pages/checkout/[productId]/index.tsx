@@ -5,9 +5,10 @@ import { useParams } from 'react-router-dom';
 import { getProducts } from '../../../lib/api/products';
 import { CheckoutData } from '../../../types/checkout';
 import type { Product } from '../../../types/product';
+import type { ShippingOption } from '../../../types/shipping';
 
 import AddressSection from '../../../components/checkout/AddressSection';
-import ShippingOptions, { ShippingOption } from '../../../components/checkout/ShippingOptions';
+import ShippingOptions from '../../../components/checkout/ShippingOptions';
 import CheckoutForm from '../../../components/checkout/CheckoutForm';
 import OrderSummary from '../../../components/checkout/OrderSummary';
 

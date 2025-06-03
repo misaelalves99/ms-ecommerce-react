@@ -19,21 +19,17 @@ export interface CheckoutData {
     expirationDate?: string;
     cvv?: string;
 }
-
-export type CheckoutForm = {
-    name: string;
-    address: string;
-    paymentMethod: "credit_card" | "boleto" | "pix";
-};
-
-export interface CheckoutData {
-  fullName: string;
+export interface CheckoutForm {
+  name: string;
   email: string;
+  phone: string;
   address: string;
   city: string;
-  postalCode: string;
-  paymentMethod: 'creditCard' | 'boleto' | 'paypal';
-  cardNumber?: string;
-  expirationDate?: string;
-  cvv?: string;
+  zipCode: string;
+  paymentMethod: "credit_card" | "boleto" | "pix";
 }
+
+export type CheckoutContextType = {
+  form: CheckoutForm;
+  setForm: (form: CheckoutForm) => void;
+};

@@ -1,3 +1,5 @@
+// src/components/checkout/CheckoutActions.tsx
+
 import React from 'react';
 import styles from './CheckoutActions.module.css';
 

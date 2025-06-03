@@ -1,4 +1,4 @@
-// app/components/Cart.tsx
+// src/components/cart/Cart.tsx
 
 import React from 'react';
 import { useCart } from '../../hooks/useCart';
@@ -19,7 +19,7 @@ const Cart: React.FC = () => {
   };
 
   const totalAmount = cartItems.reduce(
-    (total, item) => total + item.product.price * item.quantity,
+    (total: number, item) => total + item.product.price * item.quantity,
     0
   );
 

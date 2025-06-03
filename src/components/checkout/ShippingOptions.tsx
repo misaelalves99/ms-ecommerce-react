@@ -2,13 +2,7 @@
 
 import React from 'react';
 import styles from './ShippingOptions.module.css';
-
-export interface ShippingOption {
-  id: string;
-  name: string;
-  price: number;
-  deliveryTime: string;
-}
+import type { ShippingOption } from '../../types/shipping';
 
 interface Props {
   selectedShipping: ShippingOption;
@@ -39,13 +33,13 @@ const ShippingOptions: React.FC<Props> = ({ selectedShipping, onSelect }) => (
       >
         <input
           type="radio"
-          id={option.id}
+          id={option.id.toString()}
           name="shipping"
-          value={option.id}
+          value={option.id.toString()}
           checked={selectedShipping.id === option.id}
           onChange={() => onSelect(option)}
         />
-        <label htmlFor={option.id}>
+        <label htmlFor={option.id.toString()}>
           <span className={styles.shippingName}>{option.name}</span>
           <span className={styles.deliveryTime}>{option.deliveryTime}</span>
           <span className={styles.shippingPrice}>

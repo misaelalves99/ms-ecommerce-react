@@ -1,7 +1,8 @@
 // src/hooks/useProduct.ts
 
 import { useContext } from "react";
-import { ProductContext, type ProductContextType } from "../context/ProductContext";
+import { ProductContext } from "../context/ProductContext";
+import type { ProductContextType } from "../types/product";
 
 export const useProduct = (): ProductContextType => {
   const context = useContext(ProductContext);

@@ -1,4 +1,4 @@
-// app/components/CartTotal.tsx
+// src/components/cart/CartTotal.tsx
 
 import React from 'react';
 import { useCart } from '../../hooks/useCart';

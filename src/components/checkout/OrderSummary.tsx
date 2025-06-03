@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Product } from '../../types/product';
-import { ShippingOption } from './ShippingOptions';
+import type { ShippingOption } from '../../types/shipping';
 import styles from './OrderSummary.module.css';
 import CheckoutActions from './CheckoutActions';
 
