@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { FaCartPlus, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useWishlist } from "../../hooks/useWishlist";
 import { Product } from "../../types/product";
 import { CartItem } from "../../types/cart";
@@ -14,15 +15,24 @@ interface ProductCardProps {
   onBuyNow?: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const cartContext = useContext(CartContext);
+  const authContext = useContext(AuthContext);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
 
   if (!cartContext) throw new Error("CartContext não encontrado");
+  if (!authContext) throw new Error("AuthContext não encontrado");
+
   const { addToCart } = cartContext;
+  const { user } = authContext;
 
   const handleAddToCart = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     const cartItem: CartItem = {
       id: Number(product.id),
       productId: Number(product.id),
@@ -32,20 +42,45 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow }) => {
       quantity: 1,
       product: product,
     };
+
     addToCart(cartItem);
   };
 
-  const goToProduct = () => {
+  const handleBuyNow = () => {
+    if (user) {
+      // Se logado, adiciona ao carrinho antes de navegar
+      const cartItem: CartItem = {
+        id: Number(product.id),
+        productId: Number(product.id),
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        quantity: 1,
+        product: product,
+      };
+
+      addToCart(cartItem);
+    }
+
+    // Navega para a página do produto de qualquer forma
     navigate(`/products/${product.id}`);
   };
 
   const toggleWishlist = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     const productId = Number(product.id);
     if (isInWishlist(productId)) {
       removeFromWishlist(productId);
     } else {
       addToWishlist(product);
     }
+  };
+
+  const goToProduct = () => {
+    navigate(`/products/${product.id}`);
   };
 
   return (
@@ -99,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow }) => {
           >
             <FaCartPlus size={20} />
           </button>
-          <button className={styles.buyButton} onClick={() => onBuyNow?.(product)}>
+          <button className={styles.buyButton} onClick={handleBuyNow}>
             Comprar
           </button>
         </div>

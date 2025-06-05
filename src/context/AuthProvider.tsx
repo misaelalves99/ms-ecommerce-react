@@ -26,6 +26,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const data = await loginUser(email, password);
       setUser(data.user);
       localStorage.setItem("authUser", JSON.stringify(data.user));
+
       navigate("/");
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Erro inesperado no login.";
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const data = await registerUser(name, email, password);
       setUser(data.user);
       localStorage.setItem("authUser", JSON.stringify(data.user));
+
       navigate("/login");
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Erro inesperado no registro.";

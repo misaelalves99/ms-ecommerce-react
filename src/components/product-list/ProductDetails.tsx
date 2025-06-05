@@ -1,23 +1,34 @@
 // src/components/product-list/ProductDetails.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Product } from '../../types/product';
 import { useNavigate } from 'react-router-dom';
 import styles from './ProductDetails.module.css';
-import { AiOutlineHeart, AiOutlineShareAlt, AiFillStar } from 'react-icons/ai';
+import {
+  AiOutlineShareAlt,
+  AiFillStar
+} from 'react-icons/ai';
+import { FaHeart } from 'react-icons/fa';
+import { AuthContext } from '../../context/AuthContext';
+import { useWishlist } from '../../hooks/useWishlist';
 
 interface ProductDetailsProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
   oldPrice?: number;
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product, oldPrice }) => {
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+  if (!authContext) throw new Error('AuthContext não encontrado');
+  const { user } = authContext;
+
   const [mainImage, setMainImage] = useState(
-    product.imageUrl || 'https://cdn.pixabay.com/photo/2019/10/25/06/15/headphone-4576092_1280.jpg'
+    product.imageUrl ||
+    'https://cdn.pixabay.com/photo/2019/10/25/06/15/headphone-4576092_1280.jpg'
   );
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleBuyNow = () => {
     navigate(`/checkout/${product.id}`);
@@ -28,7 +39,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, oldPrice }) =>
   };
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const productId = Number(product.id);
+    if (isInWishlist(productId)) {
+      removeFromWishlist(productId);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   const handleShare = () => {
@@ -60,24 +81,36 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, oldPrice }) =>
             <button
               className={styles.favoriteButton}
               onClick={toggleFavorite}
-              aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+              aria-label={
+                isInWishlist(Number(product.id))
+                  ? 'Remover dos favoritos'
+                  : 'Adicionar aos favoritos'
+              }
+              title={
+                isInWishlist(Number(product.id))
+                  ? 'Remover dos favoritos'
+                  : 'Adicionar aos favoritos'
+              }
             >
-              <AiOutlineHeart color={isFavorite ? 'red' : 'grey'} size={24} />
+              <FaHeart
+                size={22}
+                color={isInWishlist(Number(product.id)) ? '#ff4d4f' : '#ccc'}
+              />
             </button>
+
             <button
               className={styles.shareButton}
               onClick={handleShare}
               aria-label="Compartilhar"
+              title="Compartilhar"
             >
-              <AiOutlineShareAlt size={24} />
+              <AiOutlineShareAlt size={22} />
             </button>
           </div>
         </div>
+
         <div className={styles.thumbnails}>
-          {(product.images && product.images.length > 0
-            ? product.images
-            : [product.imageUrl]
-          )
+          {(product.images && product.images.length > 0 ? product.images : [product.imageUrl])
             .filter((img): img is string => typeof img === 'string')
             .map((img, index) => (
               <div
@@ -101,6 +134,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, oldPrice }) =>
 
       <div className={styles.details}>
         <h1 className={styles.productName}>{product.name}</h1>
+
         <div className={styles.ratingAndReviews}>
           <div className={styles.rating}>
             <AiFillStar color="#ffc107" size={16} />
@@ -114,8 +148,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, oldPrice }) =>
         </div>
 
         {oldPrice && <p className={styles.oldPrice}>{formatPrice(oldPrice)}</p>}
-
-        <p className={styles.oldPrice}>{formatPrice(product.oldPrice)}</p>
+        {product.oldPrice && <p className={styles.oldPrice}>{formatPrice(product.oldPrice)}</p>}
 
         <p className={styles.productPrice}>{formatPrice(product.price)}</p>
 
