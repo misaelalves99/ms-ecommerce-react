@@ -28,7 +28,7 @@ const RegisterForm: React.FC = () => {
     try {
       await register(formData.name, formData.email, formData.password);
       setMessage("✅ Conta criada com sucesso!");
-      setTimeout(() => navigate("/auth"), 1500);
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       console.error(err);
       setMessage("❌ Falha ao criar conta. Tente novamente.");

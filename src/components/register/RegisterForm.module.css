@@ -14,9 +14,10 @@
 /* Wrapper branco com sombra moderna */
 .formWrapper {
   background-color: #fff;
-  padding: 3rem 2.5rem;
+  padding: 3rem 2rem; /* 🔧 Reduzido de 2.5rem para 2rem para evitar ultrapassar em telas estreitas */
   max-width: 420px;
   width: 100%;
+  overflow: hidden; /* 🔧 Evita que inputs/ícones extravasem */
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 80, 250, 0.15);
   transition: box-shadow 0.3s ease;

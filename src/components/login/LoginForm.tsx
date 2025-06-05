@@ -74,6 +74,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             onChange={handleChange}
             placeholder="Digite seu e-mail"
           />
+
           <FormInput
             label="Senha"
             type="password"

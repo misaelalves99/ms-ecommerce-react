@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { validateEmail } from '../../utils/validate';
 import styles from './RecoverPasswordForm.module.css';
+import FormInput from './FormInput';
+import { FiArrowLeft } from 'react-icons/fi';
 
 const RecoverPasswordForm: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -11,29 +13,38 @@ const RecoverPasswordForm: React.FC = () => {
   const handleRecoverPassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateEmail(email)) {
-      setMessage('Password recovery email sent!');
+      setMessage('E-mail de recuperação de senha enviado!');
     } else {
-      setMessage('Please enter a valid email address.');
+      setMessage('Insira um endereço de e-mail válido.');
     }
+  };
+
+  const handleGoBack = () => {
+    window.history.back();
   };
 
   return (
     <form onSubmit={handleRecoverPassword} className={styles.formContainer}>
       <div>
-        <label htmlFor="email" className={styles.block}>Email</label>
-        <input
+        <FormInput
+          label="Email"
           type="email"
-          id="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={styles.inputField}
           placeholder="Enter your email"
-          required
         />
       </div>
+
       <button type="submit" className={styles.submitButton}>
         Recover Password
       </button>
+
+      <button type="button" onClick={handleGoBack} className={styles.backButton}>
+        <FiArrowLeft className={styles.backIcon} />
+        Voltar
+      </button>
+
       {message && <p className={styles.message}>{message}</p>}
     </form>
   );
